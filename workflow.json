@@ -1,0 +1,3129 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2864,
+        -1552
+      ],
+      "id": "5c607767-8db1-4dda-a634-8f9f86bd3eea",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "emailType": "html",
+        "message": "=<p>\nHi {{ $json.firstName }},\n\n<br>\n<br>\n\nMy name is Mehmet Bisen, and alongside\n<a href=\"https://www.linkedin.com/in/YOUR_PROFILE/\" target=\"_blank\" rel=\"noopener noreferrer\">Paul Muckleston</a>\n(former COO of Microsoft’s Public Sector), I’m reaching out regarding an active buyer seeking to partner with firms in the MSP, SaaS, and tech services industries.\n\n<br>\n<br>\n\n{{ $json['Company Name'] }}’s strong technical expertise and consistent service delivery make it an exceptional fit for the kind of platform our buyer is eager to invest in. If this opportunity sounds interesting, we could arrange a quick introductory meeting to share more details.\n\n The following are some of Paul’s availability within the next couple weeks (Central Time):\n</p>\n\n<ul>\n  <li>\n    <strong>Tuesday, November 25, 2025</strong><br>\n    2:30pm<br>\n    5:30pm\n  </li>\n  <li>\n    <strong>Wednesday, November 26, 2025</strong><br>\n    3:30pm<br>\n    7:00pm\n  </li>\n  <li>\n    <strong>Thursday, November 27, 2025</strong><br>\n    12:00pm<br>\n    2:00pm\n  </li>\n</ul>\n\n<p>\n  Let me know if these times work with you, if not, what are some of your availability in the coming weeks?\n</p>\n\n\n<br>\n\n\n\n\n<p>Best regards,</p>\n{{ $json.html }}\n",
+        "options": {
+          "ccList": "name@example.com",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -1376
+      ],
+      "id": "bbfdc19d-2812-41a0-9636-2d2a570d0bb9",
+      "name": "Create a draft",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2576,
+        -1552
+      ],
+      "id": "caaf1fcf-1994-453b-9da7-5207dd720528",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -2368,
+        -1552
+      ],
+      "id": "8c7a49f0-d989-446a-8f94-e3f3f46c80ce",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1024,
+        -1392
+      ],
+      "id": "caaef3a9-202b-4e02-9e4a-7686c3aa94a6",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "###### This is where the initial email gets written\n",
+        "height": 192,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        -1952
+      ],
+      "id": "64fdb152-d825-4213-a64b-8c08f6420229",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        -1120
+      ],
+      "id": "893e0dd9-e552-4950-a515-107a976ab094",
+      "name": "firstLastNameGettter1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1632,
+        -1200
+      ],
+      "id": "53970838-fe4e-464e-b138-c6f9a240717f",
+      "name": "Merge6"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -736,
+        -1280
+      ],
+      "id": "597d8d4c-ec32-4b58-8d36-761363170cab",
+      "name": "Signature HTML"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -544,
+        -1376
+      ],
+      "id": "78dfe1b8-d9a7-4193-8711-05d7b314096d",
+      "name": "Merge7"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -96,
+        -1552
+      ],
+      "id": "eb2cf790-71b4-4716-aa16-5adf8071cc8b",
+      "name": "Merge8"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $json['Company Name'] }}",
+            "Reach out (CEO) Name": "={{ $json['Reach out (CEO) Name'] }}",
+            "Reach out (CEO) Email": "={{ $json['Reach out (CEO) Email'] }}",
+            "Description of Company": "={{ $json['Description of Company'] }}",
+            "Message ID": "={{ $json.message.id }}",
+            "Recorded Date": "={{ new Date().toLocaleDateString(\"en-US\") }}",
+            "Thread ID": "={{ $json.message.threadId }}"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        -1552
+      ],
+      "id": "559066da-58d0-4bcd-926d-f333bffdb01a",
+      "name": "First Update",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 0,
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2560,
+        -368
+      ],
+      "id": "48f54cf3-f13a-4548-9359-d06a0c687b3e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6122954f-e4ec-4da4-b7c2-75c0744483a4",
+              "leftValue": "={{ $json['Company Name'] }}",
+              "rightValue": "={{ new Date().toLocaleDateString(\"en-US\") }}\n",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "074ee1ba-c327-4f81-b5c1-0f46740438fb",
+              "leftValue": "={{ $json['Reach out (CEO) Name'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "6aba637a-37c9-4b0f-9cfe-d32ef043283e",
+              "leftValue": "={{ $json['Reach out (CEO) Email'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9615fcde-f20d-4de8-aca0-c134677e3fca",
+              "leftValue": "={{ $json['Description of Company'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1888,
+        -352
+      ],
+      "id": "c947ceac-db7c-4fde-b575-87ed13d1419f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6122954f-e4ec-4da4-b7c2-75c0744483a4",
+              "leftValue": "={{ $json['1Sent?'] }}",
+              "rightValue": "={{ new Date().toLocaleDateString(\"en-US\") }}\n",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1248,
+        -352
+      ],
+      "id": "47f05fb0-1625-452a-b864-6b99cbf9677a",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6122954f-e4ec-4da4-b7c2-75c0744483a4",
+              "leftValue": "={{ $json['2Sent?'] }}",
+              "rightValue": "={{ new Date().toLocaleDateString(\"en-US\") }}\n",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -928,
+        128
+      ],
+      "id": "5934ecc6-6d24-455c-a5b5-5b79310e9f0b",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6122954f-e4ec-4da4-b7c2-75c0744483a4",
+              "leftValue": "={{ $json['3Sent?'] }}",
+              "rightValue": "={{ new Date().toLocaleDateString(\"en-US\") }}\n",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -544,
+        704
+      ],
+      "id": "27fe3d51-13c3-4d8a-b454-c53e0e6ed109",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Final Status": "Done",
+            "Company Name": "={{ $json['Company Name'] }}"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        1280
+      ],
+      "id": "98a7faf4-ffbb-4a60-8f91-4f402ff7bd97",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2208,
+        -352
+      ],
+      "id": "87438f9c-c08c-414b-88a1-5df60c4fe6e3",
+      "name": "sent check",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6122954f-e4ec-4da4-b7c2-75c0744483a4",
+              "leftValue": "={{ $json['4Sent?'] }}",
+              "rightValue": "={{ new Date().toLocaleDateString(\"en-US\") }}\n",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1088
+      ],
+      "id": "79590533-54f9-44df-a581-0b4977fc08d6",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -704,
+        -320
+      ],
+      "id": "db4280c5-1654-44ff-940d-0887b700fcbe",
+      "name": "Signature HTML1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        -416
+      ],
+      "id": "eb25beae-e84d-41b2-92c3-396bc95f68ae",
+      "name": "firstLastNameGettter2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $node[\"sent check\"].json[\"Company Name\"] }}",
+            "1Sent?": "Sent"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        -480
+      ],
+      "id": "efbe945b-7a0f-49fe-9bbe-199bc2e84ff3",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -192,
+        -368
+      ],
+      "id": "1ec8a8df-4c04-4a60-b0cc-746e8852e955",
+      "name": "Merge9",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "message": "=Hi {{ $json.firstName }},\n\nI wanted to check if you’re still open to a brief conversation regarding M&A opportunities. If you're available, I'd be happy to schedule a quick Zoom with our tech practice lead, Paul Muckleston (former COO of Microsoft’s Public Sector), to walk through the opportunity.\n\nIf this isn’t aligned with your current priorities, I’d still love to learn more about what the right acquisition opportunity looks like for your team.\n\nWhat are some of your availability in the coming weeks for a brief introductory zoom call?\n\n\nBest,",
+        "options": {
+          "threadId": "={{ $json['Thread ID'] }}",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        -416
+      ],
+      "id": "0c626f02-bdce-4dc2-8501-9cae393e1df5",
+      "name": "Create a draft2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "07c7e596-3ee2-432b-9c7a-b58f8ae8b828",
+              "leftValue": "={{ $json['Follow Up 1 Date'] }}",
+              "rightValue": "={{ $now.toFormat('MM/dd/yyyy') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1616,
+        -368
+      ],
+      "id": "00235c24-1ffd-4519-9112-868a607407dc",
+      "name": "date check"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        160
+      ],
+      "id": "7ad046ac-8497-4342-9800-18205084142a",
+      "name": "Signature HTML2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $node[\"sent check\"].json[\"Company Name\"] }}",
+            "2Sent?": "Sent"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        48
+      ],
+      "id": "4a0b1cd4-cab9-4871-9362-f309aa374d6c",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        304,
+        96
+      ],
+      "id": "19d71c24-0884-4d33-aa08-7db3eefb8c29",
+      "name": "Merge10",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "message": "=Hi {{ $json.firstName }},\n\nDo you think an M&A opportunity is relevant for your company at this time? If it’s not aligned with your goals or you’re not considering a sale, I completely understand and would love to talk about other opportunities.\n\nThat said, a quick conversation with my team, including our tech practice lead, Paul Muckleston, could still be worthwhile. Let me know a few dates and times that work for you in the coming weeks!\n\n\nBest,",
+        "options": {
+          "threadId": "={{ $json['Thread ID'] }}",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        592,
+        80
+      ],
+      "id": "94b5145f-7947-4260-89e5-95b6e1e152f9",
+      "name": "Create a draft3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -528,
+        64
+      ],
+      "id": "ba004e41-3775-4a7a-b18d-5b20b2c99d81",
+      "name": "firstnLast"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        704
+      ],
+      "id": "6218499f-2716-4047-b05e-d90fcdc5e8c9",
+      "name": "Signature HTML3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $node[\"sent check\"].json[\"Company Name\"] }}",
+            "3Sent?": "Sent"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        544
+      ],
+      "id": "2d67b7dd-d964-4e1f-b654-6526e96d9430",
+      "name": "Update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        400,
+        592
+      ],
+      "id": "523f4e3b-142b-48f3-8b42-4d591eed9809",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "message": "=Hi {{ $json.firstName }},\n\nI'm reaching back out regarding M&A opportunities for your firm. Even if you are not interested in an acquisition, my team would love to meet with you to discuss synergies. \n\nWhat are some of your availability in the coming weeks for a brief introductory call?\n\n\nBest,\n",
+        "options": {
+          "threadId": "={{ $json['Thread ID'] }}",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        688,
+        576
+      ],
+      "id": "8b4f539e-b17d-4788-8da8-46f881aaa31a",
+      "name": "Create a draft4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        624
+      ],
+      "id": "a724b45d-3ac6-4474-8e3e-654ef4301014",
+      "name": "firstnLast1"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        1056
+      ],
+      "id": "1afad0da-2053-4c9d-9c79-82d53d693bdc",
+      "name": "Signature HTML4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $node[\"sent check\"].json[\"Company Name\"] }}",
+            "4Sent?": "Sent"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1632,
+        896
+      ],
+      "id": "c556313b-7474-40d1-815c-6bbdc4032ed5",
+      "name": "Update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        992,
+        944
+      ],
+      "id": "b3224cf2-f349-4069-ad30-994f5372708f",
+      "name": "Merge2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "message": "=Hi {{ $json.firstName }},\n\nI wanted to follow up one last time regarding a potential M&A or strategic partnership discussion. Even if now isn’t the right time for an acquisition, we’d still love to connect briefly to learn more about your company and share how we’ve helped other firms in the tech space unlock value.\n\nIf this is something you’d be open to, what would be a good time for a quick call in the next week or two?\n\nThanks again for considering, and no worries at all if it’s not a fit right now.\n\n\nBest,",
+        "options": {
+          "threadId": "={{ $json['Thread ID'] }}",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        928
+      ],
+      "id": "874a43e4-5383-460e-aa36-f1bfde0ee7cb",
+      "name": "Create a draft5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        1008
+      ],
+      "id": "993187d9-f8de-4223-9b26-baa0579968ec",
+      "name": "firstnLast2"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "success!!!!!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -1744,
+        -224
+      ],
+      "id": "063eee5c-38bb-4d81-aa7a-5235c902337b",
+      "name": "Discord",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "",
+          "name": "YOUR_discordWebhookApi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Prompt (Revised for Clarity and Grammar)\n\nCraft a concise, value-focused M&A introduction email to a business owner or executive that demonstrates genuine understanding of their background and company context. The email should highlight three tailored ways Sellside Group can support their goals — unlocking liquidity, connecting with aligned buyers, and simplifying the transaction process — and initiate a helpful, non-pushy conversation.\n\nOnly return this template and this template only (no subject line or any additional text). Do not change any wording within the template except for the parts written inside the brackets [ ], which must be replaced based on the provided company information. Everything else must remain exactly as written in the template.\n\nThe information on the business is as follows: {{ $json['Description of Company'] }}. Use this information to complete the instructions written within the brackets in the template.\n\nEmail Template:\n\nHello {{ $json.firstName }},\n\nMy name is Mehmet Bisen, a Junior M&A Analyst with Sellside Group. I was impressed by [company — say a couple of words about what makes them unique, written in second person], and at Sellside Group, we help companies like yours maximize value through strategic investment opportunities.\n\nWe currently represent a firm looking to make acquisitions in the tech space — specifically B2B software, tech services, and tech-enabled services. [Briefly highlight your company’s key strengths — such as your broad service mix, diverse client base, and transparent approach. Mention how these qualities position you as an attractive acquisition candidate.] These strengths align well with what our clients are seeking and open clear ways we can support you: unlocking liquidity, connecting you with aligned buyers, and simplifying the transaction process. That’s why I believe this could be an exciting opportunity for your company.\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2144,
+        -2304
+      ],
+      "id": "7b8dd14f-b981-49a6-9aa7-f9fbbce85a08",
+      "name": "email writer1",
+      "credentials": {
+        "openAiApi": {
+          "id": "",
+          "name": "YOUR_openAiApi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Strategic Growth Opportunity for {{ $json['Company Name'] }}",
+        "emailType": "html",
+        "message": "=\n{{ $json.email.replace(/\\n/g,'<br>') }}\n<p>\n  It would be great to set up a brief meeting with our Tech Practice Lead,\n  <a href=\"https://www.linkedin.com/in/YOUR_PROFILE/\" target=\"_blank\" rel=\"noopener noreferrer\">Paul Muckleston</a>,\n  former COO of Microsoft’s Public Sector, to discuss this opportunity in greater detail.\n  What are some times in the coming weeks that would work best for a short introductory Zoom call?\n</p>\n<br>\n<p>Best regards,</p>\n<br><br>\n{{ $json.html }}\n",
+        "options": {
+          "ccList": "name@example.com",
+          "sendTo": "={{ $json['Reach out (CEO) Email'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -640,
+        -2592
+      ],
+      "id": "de591da2-e349-46b7-a799-cd567dbe6501",
+      "name": "Create a draft1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "YOUR_gmailOAuth2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2928,
+        -2768
+      ],
+      "id": "79d0908d-b038-4acd-83d3-f2e86e1fceaf",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 15
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -2720,
+        -2768
+      ],
+      "id": "8076b747-c540-4c48-98b0-145a942d59d0",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const content = item.json.message?.content || \"\";\n  return {\n    json: {\n      content\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        -2304
+      ],
+      "id": "58ef2ae2-a549-424e-9e67-9e4ad5abe5bc",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8dc3cba-cde4-42eb-844c-f7ced6cdfa83",
+              "name": "email",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1552,
+        -2304
+      ],
+      "id": "eaba5fe2-004a-471f-abb5-7cfa9bce7a9b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1376,
+        -2608
+      ],
+      "id": "257e5180-57c3-4343-8a85-ebd6cbc813e5",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const fullName = item.json['Reach out (CEO) Name'] || \"\";\n  const parts = fullName.trim().split(\" \");\n\n  return {\n    json: {\n      firstName: parts[0] || \"\",\n      lastName: parts.slice(1).join(\" \") || \"\"\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2544,
+        -2288
+      ],
+      "id": "30d3a058-b4fb-4b8a-8866-d10d8fe7de94",
+      "name": "firstLastNameGettter"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2352,
+        -2304
+      ],
+      "id": "9fb9423f-cbff-44a3-a52b-35515746e065",
+      "name": "Merge11"
+    },
+    {
+      "parameters": {
+        "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n  <tr>\n    <td style=\"vertical-align:middle; padding-right:16px;\">\n      <img\n        src=\"https://imgs.search.brave.com/3J9clint523RGRjX4tCi0Yxrnlt5-GHSDXCXhjrLj1Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zcGFj/ZS5ib3VuY2V3YXRj/aC5jb20vaW1hZ2Vz/LzE3NTE5ODkvU2Vs/bHNpZGUtR3JvdXAs/LUxMQy1sb2dvLmpw/Zw\"\n        alt=\"SELLSIDEGROUP\"\n        width=\"96\"\n        style=\"display:block; border:0; outline:none; height:auto; width:96px;\"\n      />\n    </td>\n    <td style=\"vertical-align:middle; font-family:Arial, Helvetica, sans-serif;\">\n      <div style=\"font-size:18px; line-height:22px; font-weight:700; color:#202124;\">\n        Mehmet Bisen\n      </div>\n      <div style=\"font-size:12px; line-height:16px; color:#5f6368;\">\n        Junior M&amp;A Analyst\n      </div>\n      <div style=\"font-size:14px; line-height:20px;\">\n        <a href=\"mailto:name@example.com\" style=\"color:#1a73e8; text-decoration:underline;\">\n          name@example.com\n        </a>\n      </div>\n      <div style=\"font-size:14px; line-height:20px; color:#5f6368;\">\n       555-555-0100\n      </div>\n    </td>\n  </tr>\n</table>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -1088,
+        -2496
+      ],
+      "id": "f5e32b84-1fef-486a-a2ea-8b8eab614bcb",
+      "name": "Signature HTML5"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -896,
+        -2592
+      ],
+      "id": "5dc75045-4bfe-47e3-afd5-bc5e2715be67",
+      "name": "Merge12"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -448,
+        -2768
+      ],
+      "id": "4d2c9cf4-c9ce-4aaf-b322-f23dfc31eae3",
+      "name": "Merge13"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "n8n automization test"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Follow Ups"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company Name": "={{ $json['Company Name'] }}",
+            "Reach out (CEO) Name": "={{ $json['Reach out (CEO) Name'] }}",
+            "Reach out (CEO) Email": "={{ $json['Reach out (CEO) Email'] }}",
+            "Description of Company": "={{ $json['Description of Company'] }}",
+            "Message ID": "={{ $json.message.id }}",
+            "Recorded Date": "={{ new Date().toLocaleDateString(\"en-US\") }}",
+            "Thread ID": "={{ $json.message.threadId }}"
+          },
+          "matchingColumns": [
+            "Company Name"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reach out (CEO) Name",
+              "displayName": "Reach out (CEO) Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reach out (CEO) Email",
+              "displayName": "Reach out (CEO) Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description of Company",
+              "displayName": "Description of Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recorded Date",
+              "displayName": "Recorded Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread ID",
+              "displayName": "Thread ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Group",
+              "displayName": "Group",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 1 Date",
+              "displayName": "Follow Up 1 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "1Sent?",
+              "displayName": "1Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 2 Date",
+              "displayName": "Follow Up 2 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "2Sent?",
+              "displayName": "2Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 3 Date",
+              "displayName": "Follow Up 3 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "3Sent?",
+              "displayName": "3Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow Up 4 Date",
+              "displayName": "Follow Up 4 Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "4Sent?",
+              "displayName": "4Sent?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Status",
+              "displayName": "Final Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -224,
+        -2768
+      ],
+      "id": "1d9888df-97e3-472f-96f0-bfd499a63499",
+      "name": "First Update1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "YOUR_googleSheetsOAuth2Api"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Merge8",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "firstLastNameGettter1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Signature HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstLastNameGettter1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge6": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Signature HTML": {
+      "main": [
+        [
+          {
+            "node": "Merge7",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge7": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge8": {
+      "main": [
+        [
+          {
+            "node": "First Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "sent check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "date check",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Signature HTML1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "firstLastNameGettter2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge9",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "firstnLast",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Signature HTML2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "firstnLast1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Signature HTML3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sent check": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Signature HTML4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "firstnLast2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature HTML1": {
+      "main": [
+        [
+          {
+            "node": "Merge9",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "firstLastNameGettter2": {
+      "main": [
+        [
+          {
+            "node": "Merge9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge9": {
+      "main": [
+        [
+          {
+            "node": "Create a draft2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft2": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "date check": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature HTML2": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge10": {
+      "main": [
+        [
+          {
+            "node": "Create a draft3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft3": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstnLast": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature HTML3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Create a draft4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft4": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstnLast1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature HTML4": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Create a draft5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft5": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstnLast2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "email writer1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft1": {
+      "main": [
+        [
+          {
+            "node": "Merge13",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "firstLastNameGettter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Signature HTML5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "firstLastNameGettter": {
+      "main": [
+        [
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge11": {
+      "main": [
+        [
+          {
+            "node": "email writer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signature HTML5": {
+      "main": [
+        [
+          {
+            "node": "Merge12",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge12": {
+      "main": [
+        [
+          {
+            "node": "Create a draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge13": {
+      "main": [
+        [
+          {
+            "node": "First Update1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
